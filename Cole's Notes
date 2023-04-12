@@ -4,7 +4,7 @@
 import pandas as pd 
 df = pd.read.csv("nba_games1.csv" , index_col=0)
 df 
-df = df.sort_values("season") 
+df = df.sort_values("date") # I need it to be sorted by date 
 df = df.reset_index(drop=True) 
 df
 del df["index"] 
