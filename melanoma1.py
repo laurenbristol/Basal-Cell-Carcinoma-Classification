@@ -20,6 +20,7 @@ from keras.preprocessing import image
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
 
+#number of samples that will be passed through to the network at one time
 batch_size = 32
 img_height = 180
 img_width = 180
@@ -61,18 +62,22 @@ val_ds = tf.keras.utils.image_dataset_from_directory(
   image_size=(img_height, img_width),
   batch_size=batch_size)
 
+#print(type(val_ds))
+# prints <class 'tensorflow.python.data.ops.batch_op._BatchDataset'>
+
 #assign class names based on folder labels
 class_names = train_ds.class_names
 #print(class_names)
 
 #tring to print images because I dont think theyre being read in
-plt.figure(figsize=(10, 10))
-for images, labels in train_ds.take(1):
+""" plt.figure(figsize=(10, 10))
+for images, labels in train_ds:
   for i in range(9):
-    ax = plt.subplot(3, 3, i + 1)
+    ax = plt.subplot(3, 3, i+1)
     plt.imshow(images[i].numpy().astype("uint8"))
     plt.title(class_names[labels[i]])
     plt.axis("off")
+    plt.show() """
 
 """ for image_batch, labels_batch in train_ds:
     print(image_batch.shape)
@@ -109,6 +114,7 @@ model = Sequential([
 model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
+
 #adam optimizer: stoichastic gradient descent
 
 #checkpoint: program compiled without any obvious errors here
@@ -118,9 +124,9 @@ model.compile(optimizer='adam',
 
 #staring small with 10 epochs
 
-""" epochs=10
+epochs=10
 history = model.fit(
   train_ds,
   validation_data=val_ds,
   epochs=epochs
-) """
+) 
