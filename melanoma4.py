@@ -19,9 +19,9 @@ from keras.models import Sequential
 
 #number of samples that will be passed through to the network at one time
 #"Generally batch size of 32 or 25 is good, with epochs = 100 unless you have large dataset"
-batch_size = 20
-img_height = 180
-img_width = 180
+batch_size = 32
+img_height = 300
+img_width = 300
 #import image directories
 #data_dir = '/Users/laure/Desktop/melanoma/melanoma_cancer_dataset2'
 
@@ -33,7 +33,7 @@ class_names_label = {class_name: i for i, class_name in enumerate(class_names)}
 
 num_classes = len(class_names)
 
-IMAGE_SIZE = 180
+IMAGE_SIZE = 300
 
 #function to load data
 def load_data():
@@ -111,21 +111,21 @@ model = Sequential([
   # params:
     # Conv2D( number of feature options that the NN is looking for, ( window length and width if when the NN is taking "steps" through the image ) )
       # the "window" size AKA kernel size is the "art": mess around with it
-  #kl.Conv2D(256, (3, 3), padding='same', activation='relu'),
-  #kl.Conv2D(256, (3, 3), padding='same', activation='relu'),
-  #kl.Conv2D(128, (3, 3), padding='same', activation='relu'),
-  kl.Conv2D(64, (3, 3), padding='same', activation='relu'),
-  kl.Conv2D(32, (3, 3), padding='same', activation='relu'),
+    #number of layers (first parameter in Conv2D function) should increase through the layers
+
+  kl.Conv2D(16, (3, 3), activation='relu'),
+  #kl.Conv2D(32, (3, 3), activation='relu'),
   kl.MaxPooling2D(2, 2),
   #hidden layers
-  kl.Conv2D(32, (3, 3), padding='same', activation='relu'),
+  kl.Conv2D(16, (3, 3), activation='relu'),
   kl.MaxPooling2D(2, 2),
-  kl.Conv2D(16, (3, 3), padding='same', activation='relu'),
+  kl.Conv2D(32, (3, 3), activation='relu'),
   kl.MaxPooling2D(2, 2),
   #flatten outputs to reduce number of features
   kl.Flatten(),
   #output layers
-  kl.Dense(128, activation='relu'),
+  #calculates dot product between inputs and kernel
+  kl.Dense(32, activation='relu'),
   kl.Dense(num_classes)
 ])
 
@@ -138,7 +138,8 @@ model.compile(optimizer='adam',
 print("model compiled\n")
 
 #adam optimizer: stoichastic gradient descent, default
-# loss: 
+# loss: Sparse Categorical Cross Entropy
+    #
 # "everybody looks at accuracy"
 
 
@@ -146,8 +147,7 @@ print("model compiled\n")
 #training the model 
 #epoch: one complete pass through training data 
 
-
-history = model.fit(train_images, train_labels, batch_size = 32, epochs = 4, validation_split=.2)
+history = model.fit(train_images, train_labels, batch_size = 20, epochs = 4, validation_split=.2)
 print('model has been trained\n')
 
 print(model.summary())
@@ -155,7 +155,7 @@ print(model.summary())
 
 #check with test images
 print("testing model accuracy on test image and label set")
-test_loss = model.evaluate(test_images, test_labels)
+test_loss = model.evaluate(test_images, test_labels, batch_size= 32)
 
 #this is the only part i dont understand yet but we'll get there i just wanted to see what it did
 predictions = model.predict(test_images)    #vector of probabilities
