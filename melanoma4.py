@@ -146,13 +146,18 @@ print("model compiled\n")
 #training the model 
 #epoch: one complete pass through training data 
 
-print(model.summary())
+
 history = model.fit(train_images, train_labels, batch_size = 32, epochs = 4, validation_split=.2)
+print('model has been trained\n')
+
+print(model.summary())
+
 
 #check with test images
-
+print("testing model accuracy on test image and label set")
 test_loss = model.evaluate(test_images, test_labels)
 
+#this is the only part i dont understand yet but we'll get there i just wanted to see what it did
 predictions = model.predict(test_images)    #vector of probabilities
 pred_labels = np.argmax(predictions, axis=1) #take highest probability
 
