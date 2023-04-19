@@ -33,7 +33,7 @@ class_names_label = {class_name: i for i, class_name in enumerate(class_names)}
 
 num_classes = len(class_names)
 
-IMAGE_SIZE = 200
+IMAGE_SIZE = 150
 
 #function to load data
 def load_data():
@@ -149,7 +149,7 @@ print("model compiled\n")
 #epoch: one complete pass through training data 
 
 
-history = model.fit(train_images, train_labels, batch_size = 32, epochs = 4, validation_split=.2)
+history = model.fit(train_images, train_labels, batch_size = 20, epochs = 10, validation_split=.2)
 print('model has been trained\n')
 
 print(model.summary())
@@ -164,3 +164,16 @@ predictions = model.predict(test_images)    #vector of probabilities
 pred_labels = np.argmax(predictions, axis=1) #take highest probability
 
 print(classification_report(test_labels, pred_labels))
+
+#print confusion matrix
+
+from sklearn.datasets import make_classification
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+
+cm = confusion_matrix(test_labels, pred_labels)
+disp = ConfusionMatrixDisplay(confusion_matrix = cm)
+
+disp.plot()
+plt.show()
