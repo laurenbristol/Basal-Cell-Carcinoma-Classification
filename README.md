@@ -1,3 +1,3 @@
 # 4997Project
 
-https://www.kaggle.com/competitions/march-machine-learning-mania-2023/data
+https://www.kaggle.com/datasets/hasnainjaved/melanoma-skin-cancer-dataset-of-10000-images
