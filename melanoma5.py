@@ -33,7 +33,7 @@ class_names_label = {class_name: i for i, class_name in enumerate(class_names)}
 
 num_classes = len(class_names)
 
-IMAGE_SIZE = 150
+IMAGE_SIZE = 200
 
 #function to load data
 def load_data():
@@ -41,6 +41,25 @@ def load_data():
     CATEGORY = ['test', 'train']
 
     output = []
+
+  
+
+    def countFiles(directory_path):
+        count = 0
+        # Iterate directory
+        for file in os.listdir(directory_path):
+        # check if current path is a file
+            if (file.endswith('jpg')):
+                count += 1
+        return count
+
+    
+    print("train benign has " + str(countFiles('/Users/laure/Desktop/melanoma_cancer_dataset2/train/benign')))
+    print("train malignant has " + str(countFiles('/Users/laure/Desktop/melanoma_cancer_dataset2/train/malignant')))
+
+    num_train_benign = countFiles('/Users/laure/Desktop/melanoma_cancer_dataset2/train/benign')
+
+    num_train_malignant = countFiles('/Users/laure/Desktop/melanoma_cancer_dataset2/train/malignant')
 
     for category in CATEGORY:
         print("loading category " + category + "\n")
@@ -86,6 +105,8 @@ def load_data():
     #return the output list
     return output
 
+
+
 #call load_data() function to create train and test dataset
 (train_images, train_labels), (test_images, test_labels) = load_data()
 
@@ -111,9 +132,7 @@ model = Sequential([
   # params:
     # Conv2D( number of feature options that the NN is looking for, ( window length and width if when the NN is taking "steps" through the image ) )
       # the "window" size AKA kernel size is the "art": mess around with it
-  #kl.Conv2D(256, (3, 3), padding='same', activation='relu'),
-  #kl.Conv2D(256, (3, 3), padding='same', activation='relu'),
-  #kl.Conv2D(128, (3, 3), padding='same', activation='relu'),
+
   kl.Conv2D(16, (3, 3), padding='same', activation='relu'),
   kl.Conv2D(32, (3, 3), padding='same', activation='relu'),
   kl.MaxPooling2D(2, 2),
@@ -149,7 +168,7 @@ print("model compiled\n")
 #epoch: one complete pass through training data 
 
 
-history = model.fit(train_images, train_labels, batch_size = 20, epochs = 10, validation_split=.2)
+history = model.fit(train_images, train_labels, batch_size = 20, epochs = 50, validation_split=.25)
 print('model has been trained\n')
 
 print(model.summary())
@@ -176,4 +195,18 @@ cm = confusion_matrix(test_labels, pred_labels)
 disp = ConfusionMatrixDisplay(confusion_matrix = cm)
 
 disp.plot()
+plt.show()
+
+# loss_train = history.history['loss_train']
+# loss_val = history.history['loss_val']
+# epochs = range(1,35)
+# plt.plot(epochs, loss_train, 'g', label='Training Loss')
+# plt.plot(epochs, loss_val, 'b', label='Validation Loss')
+# plt.title('Training and Validation Loss')
+# plt.xlabel('Epochs')
+# plt.ylabel('Loss')
+# plt.legend()
+# plt.show()
+
+pd.DataFrame(history.history).plot(figsize=(8,5))
 plt.show()
