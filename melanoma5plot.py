@@ -17,7 +17,8 @@ import pandas as pd
 
 
 #print val
+def printAccuracyAndLoss(): 
 
-melanoma5.history_data.plot(figsize=(8,5))
-plt.ylim(0, 1)
-plt.show()
+    melanoma5.history_data.plot(figsize=(8,5))
+    plt.ylim(0, 1)
+    plt.show()
