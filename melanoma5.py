@@ -1,4 +1,6 @@
 #imports
+import melanoma5plot
+
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
@@ -194,8 +196,12 @@ from sklearn.svm import SVC
 cm = confusion_matrix(test_labels, pred_labels)
 disp = ConfusionMatrixDisplay(confusion_matrix = cm)
 
-disp.plot()
-plt.show()
+cm_data = pd.DataFrame(cm)
+
+cm_data.to_csv("confusion_matrix_data.csv", encoding = 'utf-8', index = False)
+
+#disp.plot()
+#plt.show()
 
 # loss_train = history.history['loss_train']
 # loss_val = history.history['loss_val']
@@ -208,5 +214,5 @@ plt.show()
 # plt.legend()
 # plt.show()
 
-pd.DataFrame(history.history).plot(figsize=(8,5))
-plt.show()
+history_data = pd.DataFrame(history.history)
+cm_data.to_csv("history_data.csv", encoding = 'utf-8', index = False)
