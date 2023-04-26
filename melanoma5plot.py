@@ -1,6 +1,6 @@
 #imports
 
-import melanoma5
+
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import pandas as pd
@@ -18,7 +18,11 @@ import pandas as pd
 
 #print val
 def printAccuracyAndLoss(): 
+    df = pd.read_csv('/Users/laure/Desktop/VS Code/history_data.csv')
 
-    melanoma5.history_data.plot(figsize=(8,5))
-    plt.ylim(0, 1)
+    df.plot()
+    #plt.ylim(0, 1)
     plt.show()
+
+
+printAccuracyAndLoss()

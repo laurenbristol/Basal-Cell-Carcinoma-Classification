@@ -1,5 +1,5 @@
 #imports
-import melanoma5plot
+#import melanoma5plot
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,6 +12,8 @@ import cv2
 import keras.layers as kl
 from sklearn.utils import shuffle
 from sklearn.metrics import classification_report
+
+from keras.callbacks import CSVLogger
 
 from keras.layers import Input, Lambda, Dense, Flatten,Dropout
 from keras.models import Model
@@ -169,8 +171,8 @@ print("model compiled\n")
 #training the model 
 #epoch: one complete pass through training data 
 
-
-history = model.fit(train_images, train_labels, batch_size = 20, epochs = 50, validation_split=.25)
+csv_logger = CSVLogger('training.log')
+history = model.fit(train_images, train_labels, batch_size = 50, epochs = 2, callbacks = [csv_logger], validation_split=.25)
 print('model has been trained\n')
 
 print(model.summary())
@@ -215,4 +217,13 @@ cm_data.to_csv("confusion_matrix_data.csv", encoding = 'utf-8', index = False)
 # plt.show()
 
 history_data = pd.DataFrame(history.history)
-cm_data.to_csv("history_data.csv", encoding = 'utf-8', index = False)
+history_data.to_csv("history_data.csv", encoding = 'utf-8', index = False)
+
+#filename='history_data_logger.csv'
+#history_logger=tf.keras.callbacks.CSVLogger(filename, separator=",", append=True)
+
+
+#
+# 
+# pd.DataFrame(history.history).plot(figsize=(8,5))
+#melanoma5plot.printAccuracyAndLoss()
